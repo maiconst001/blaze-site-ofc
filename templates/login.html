@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="shortcut icon" href="../static/images/Bot (1).png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/login-css.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Cadastro meu bot</title>
+</head>
+<body>
+    <main id="app">
+        <section class="a">
+            <header class="in-a">
+                <h1>fazer login</h1>
+                <div class="logo">
+                    <a href="/">    
+                        <img src="../static/images/Bot (1).png" alt="botwinner">
+                    </a>
+                </div>
+                <h3>acessar bot</h3>
+            </header>
+            <form enctype="multipart/form-data" action="/entrar" method="post">
+                <div class="log-p2">
+                    <div class="form-group">
+                        <label for="l2">Seu Email</label>
+                        <input required name="email" type="email" class="form-control" id="l2" placeholder="Email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="l3">Sua Senha</label>
+                        <input name="password" required type="text" class="form-control" id="l3" placeholder="Senha">
+                    </div>    
+                </div>
+                
+                <div class="links"></div>
+                    <a href="/cad">Criar conta</a>
+                </div>
+                </div>
+
+                <div class="login-btn">
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </div>
+              </form>
+        </section>
+        <section class="b">
+            <img src="../static/images/fundo-login.webp" alt="">
+        </section>
+    </main>
+</body>
+
+</html>

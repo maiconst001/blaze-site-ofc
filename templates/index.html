@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="shortcut icon" href="../static/images/Bot (1).png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/index-css.css">
+    <title>Painel de admnistração</title>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="" id="navbarTogglerDemo01">
+            <h4>Seja bem vindo ao painel</h4>
+            <h4><a class="badge badge-warning" href="/sair">Sair</a></h4>
+        </div>
+        <div class="p2">
+            {% if pay_date != "false": %}
+                <h2>Expira em: {{ pay_date }}</h2>
+            {% else %}
+                <h2>2 dias de teste grátis</h2>
+            {% endif %}
+            <a href="/pay">
+                <button class="btn btn-danger">Adicionar +30 dias de assinatura</button>
+            </a>
+        </div>
+      </nav>
+
+      
+      <section class="sec3">
+        <a target="_blank" href="/how-add">
+            Clique aqui e veja como criar seu um bot
+        </a>     
+        <a target="_blank" href="https://api.whatsapp.com/send/?phone=5573999893686&text=Pode+me+ajudar+com+a+cria%C3%A7%C3%A3o+do+meu+bot%3F&type=phone_number&app_absent=0">
+            <img src="https://www.dsmeletro.com/wp-content/uploads/2020/04/whatsapp-icon-transparent-png-6.png" alt="">
+            Fale com o suporte
+        </a>     
+    </section>
+      
+
+    <main>
+        <h1>Meus bots</h1>
+        <section class="a">
+            <h3>Meu bot double</h3>
+            <div class="data">
+                <div class="bot-model">
+                    <form enctype="multipart/form-data" method="post" action="/update-bot">
+                        <div class="form-group">
+                            <label for="inputAddress">Insira o id do seu bot com o "-" sinal de menos</label>
+                            <input value="{{bot_id}}" required name="bot_id" type="text" class="form-control" id="inputAddress" placeholder="Exemplo: -10101010">
+                        </div>
+                        
+                        <div class="b-bot">        
+                            <button class="btn btn-dark">Salvar</button>
+                            <div class="status">
+                                <div class="ttt ttt-active"></div>
+                            </div>
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="a">
+            <h3>Meu bot crash (Em breve)</h3>
+            <div class="data">
+                <div class="bot-model">
+                    <form>                      
+                        <div class="b-bot">        
+                            <button disabled class="btn btn-dark">Salvar</button>
+                            <div class="status">
+                                <div class="ttt"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </section>
+    </main>
+</body>
+<style>
+
+body {
+    background-color: #222;
+    color: white;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+h1 {
+    margin: 40px 0px;
+    text-transform: capitalize;
+}
+
+main ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    color: black;
+}
+
+main ul li {
+    box-shadow: 1px 2px 13px rgba(0, 0, 0, 0.144);
+    padding: 20px;
+    background-color: white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px;
+    flex-shrink: 1;
+}
+
+.dvs {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.356);
+    margin-bottom: 15px;
+}
+
+main .content span {
+    font-size: 13px;
+    font-weight: bold;
+}
+</style>
+</html>
