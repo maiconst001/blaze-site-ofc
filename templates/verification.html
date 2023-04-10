@@ -15,34 +15,29 @@
     <main id="app">
         <section class="a">
             <header class="in-a">
-                <h1>fazer login</h1>
+                <h1>Verificar Conta</h1>
                 <div class="logo">
                     <a href="/">    
                         <img src="../static/images/Bot (1).png" alt="botwinner">
                     </a>
                 </div>
-                <h3>acessar bot</h3>
+                <h3>Quase lá!!!</h3>
             </header>
-            <form enctype="multipart/form-data" action="/entrar" method="post">
+            <form enctype="multipart/form-data" action="/verify" method="post">
                 <div class="log-p2">
                     <div class="form-group">
-                        <label for="l2">Seu Email</label>
-                        <input required name="email" type="email" class="form-control" id="l2" placeholder="Email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="l3">Sua Senha</label>
-                        <input name="password" required type="password" class="form-control" id="l3" placeholder="Senha">
-                    </div>    
+                        <label for="l2">Codigo de verificação</label>
+                        <input required name="code" type="text" class="form-control" id="l2" placeholder="Codigo">
+                    </div> 
                 </div>
                 
                 <div class="links"></div>
-                    <a href="/cad">Criar conta</a>
+                    <a href="/sair">Sair da verificação</a>
                 </div>
                 </div>
 
                 <div class="login-btn">
-                    <button type="submit" class="btn btn-primary">Entrar</button>
+                    <button type="submit" class="btn btn-primary">Enviar codigo</button>
                 </div>
               </form>
         </section>

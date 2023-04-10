@@ -17,7 +17,7 @@ import mercadopago
 from random import choice
 # Configure as credenciais
 
-sdk = mercadopago.SDK("TEST-4368628010042942-091321-1562c33b6967e86a81c960dfe9b260f8-1165943682")
+sdk = mercadopago.SDK("APP_USR-4368628010042942-091321-5f0f7612469859189ef6c95d2aab3156-1165943682")
 
 
 def Create_payment():
@@ -53,6 +53,47 @@ def get_peyment(collector_id):
 # -----fim dos pagamentos-------
 
 
+# send email
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+SMTP_SERVER = "smtp-mail.outlook.com"
+SMTP_PORT = 587
+SMTP_USERNAME = "maisantosmix2018@hotmail.com"
+SMTP_PASSWORD = "Negucio2018$"
+
+EMAIL_FROM = "maisantosmix2018@hotmail.com"
+
+def send_email(EMAIL_TO):
+    code = ''
+    for c in range(6):
+        code += str(choice(range(0, 10)))
+
+    html = '<h1>seu codigo de confirmação botwinner <br><br> codigo: ' + code + '</h1>'
+    
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Botwinner - bussines"
+    msg['From'] = EMAIL_FROM 
+    msg['To'] = EMAIL_TO
+
+    part2 = MIMEText(html, 'html')
+    msg.attach(part2)
+
+    debuglevel = False
+
+
+    mail = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    mail.set_debuglevel(debuglevel)
+    mail.starttls()
+    mail.login(SMTP_USERNAME, SMTP_PASSWORD)
+    mail.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+    mail.quit()
+    return code
+
+
+
 db = SQLAlchemy()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -62,12 +103,26 @@ class User(db.Model):
     email = db.Column(db.String, unique=True, nullable=False)
     senha = db.Column(db.String, nullable=False)
     
+    verify = db.Column(db.String, nullable=False)
+    code = db.Column(db.String, nullable=False)
+
     free_days = db.Column(db.Integer, nullable=False)
     preference_id = db.Column(db.String)
     collector_id = db.Column(db.String)
     pay_date = db.Column(db.String)
     bot = db.Column(db.String, unique=True, nullable=False)
     data = db.Column(db.String, nullable=False)
+
+
+
+def verify_login(email, senha):
+    try:
+        if len(email) > 0 and len(senha) > 0:
+
+            return True
+        return False
+    except:
+        return False
 
 
 
@@ -84,12 +139,14 @@ def lading():
 
 @app.route("/dashboard")
 def main():
-    if verify_login(session['email'], session['senha']):
-
-
-        try:    
-            email = session['email']    
-            user = User.query.filter_by(email=email).first()
+    try:    
+        email = session['email']   
+        user = User.query.filter_by(email=email).first()
+        
+        if user.verify == 'false':
+            return redirect(url_for('verify'))
+        
+        if verify_login(session['email'], session['senha']): 
 
             #user.pay_date = str(datetime.now()).split(' ')[0]
             #db.session.commit() 
@@ -127,9 +184,10 @@ def main():
                                 free_days=user.free_days,
                                 pay_date = user.pay_date
                             )
-        except:
-            session['email'] = ''
-            session['senha'] = ''
+    except Exception as e:
+        print(e)
+        session['email'] = ''
+        session['senha'] = ''
 
 
     return redirect(url_for('entrar'))
@@ -152,20 +210,15 @@ def pay():
 
 
 
-def verify_login(email, senha):
-    try:
-        if len(email) > 0 and len(senha) > 0:
-
-            return True
-        return False
-    except:
-        return False
 
 
 
 @app.route("/entrar", methods=["POST", 'GET'])
 def entrar():
     try:
+        
+        
+
         if verify_login(session['email'], session['senha']):
             return redirect(url_for('main'))
 
@@ -188,6 +241,42 @@ def entrar():
         return redirect(url_for('entrar'))
 
 
+@app.route("/verify", methods=["POST", 'GET'])
+def verify():
+    if request.method == 'GET':
+        try:
+            email = session['email']
+            user = User.query.filter_by(email=email).first()
+            if user.verify == 'true':
+                return redirect(url_for('main'))
+            else:
+                return render_template('verification.html')
+
+
+        except:
+            return redirect(url_for('main'))
+        
+    else:         
+        try:            
+            verify = request.form.get('code').strip()
+            email = session['email']    
+            user = User.query.filter_by(email=email).first()
+
+            if user.code == verify:
+                user.verify = 'true'
+                db.session.commit() 
+
+                return redirect(url_for('main'))
+            else:
+                return render_template('verification.html')
+
+        except:
+            return render_template('verification.html')
+
+
+
+
+
 @app.route("/cad", methods=["POST", 'GET'])
 def create_user():
     
@@ -198,6 +287,7 @@ def create_user():
         nome = request.form.get('nome').strip()
         email = request.form.get('email').strip()
         senha = request.form.get('password').strip()
+        
         data = str(datetime.now())
 
         
@@ -206,7 +296,14 @@ def create_user():
 
 
 
-        user = User(email=email, name=nome, senha=senha, bot='', data=data ,free_days=2, preference_id='', collector_id='', pay_date=added_date)
+
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            code = send_email(email)
+        else:
+            return redirect(url_for('create_user'))
+
+        user = User(email=email, name=nome, code=code, verify='false', senha=senha, bot='', data=data ,free_days=2, preference_id='', collector_id='', pay_date=added_date)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('main'))
